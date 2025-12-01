@@ -180,7 +180,7 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Contextualizacion.html">Contextualización del Proyecto</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Eda.html"><strong>Análisis Exploratorio de los Datos</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="EDA.html"><strong>Análisis Exploratorio de los Datos</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="Benchmarks.html"><strong>Implementación de modelos benchmark</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="Original.html">Configuración</a></li>
 
@@ -418,63 +418,23 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">audio_dir</span> <span class="o">=</span> <span class="s1">&#39;../data/train_audio&#39;</span>
-
 <span class="n">csv_filename</span> <span class="o">=</span> <span class="s1">&#39;../data/observaciones_top20_especies.csv&#39;</span>
+<span class="n">FILENAME_COLUMN</span> <span class="o">=</span> <span class="s1">&#39;filename&#39;</span> 
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_filename</span><span class="p">)</span>
-    <span class="n">df</span>
-    
 <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERROR: El archivo &#39;</span><span class="si">{</span><span class="n">csv_filename</span><span class="si">}</span><span class="s2">&#39; no se encuentra en el directorio actual.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: El archivo &#39;</span><span class="si">{</span><span class="n">csv_filename</span><span class="si">}</span><span class="s2">&#39; no se encuentra.&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="s1">&#39;df&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">available_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">audio_dir</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Archivos encontrados en &#39;</span><span class="si">{</span><span class="n">audio_dir</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">available_files</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR: La carpeta &#39;</span><span class="si">{</span><span class="n">audio_dir</span><span class="si">}</span><span class="s2">&#39; no se encontró. Asegúrate de que el nombre sea correcto.&quot;</span><span class="p">)</span>
-        <span class="n">available_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: El DataFrame &#39;df&#39; está vacío o no se cargó correctamente en la Celda 1.&quot;</span><span class="p">)</span>
-    <span class="n">available_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Archivos encontrados en &#39;../data/train_audio&#39;: 146
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">FILENAME_COLUMN</span> <span class="o">=</span> <span class="s1">&#39;primary_label&#39;</span>
-
-<span class="k">if</span> <span class="n">FILENAME_COLUMN</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span> <span class="ow">and</span> <span class="n">FILENAME_COLUMN</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     
-    <span class="n">df_filtered</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">FILENAME_COLUMN</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">available_files</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    
-    <span class="k">if</span> <span class="n">df_filtered</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Advertencia: El DataFrame filtrado está vacío. No hay coincidencias entre el CSV y la carpeta de audios.&quot;</span><span class="p">)</span>
-
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ERROR: La columna &#39;</span><span class="si">{</span><span class="n">FILENAME_COLUMN</span><span class="si">}</span><span class="s2">&#39; no se encontró en el CSV.&quot;</span><span class="p">)</span>
-    
-    <span class="n">df_filtered</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">df_filtered</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-
+    <span class="n">df_filtered</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> 
     <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;combined_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;primary_label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> 
         <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;scientific_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
@@ -486,13 +446,13 @@ document.write(`
         <span class="n">initial_species</span> <span class="o">=</span> <span class="n">species_options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">initial_audios</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">[</span>
             <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;combined_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">initial_species</span>
-        <span class="p">][</span><span class="n">FILENAME_COLUMN</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="p">][</span><span class="n">FILENAME_COLUMN</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span> 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">initial_species</span> <span class="o">=</span> <span class="s2">&quot;No data&quot;</span>
         <span class="n">initial_audios</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;No hay audios disponibles&quot;</span><span class="p">]</span>
     
 <span class="k">else</span><span class="p">:</span>
-  
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: No se pudieron preparar los datos.&quot;</span><span class="p">)</span>
     <span class="n">species_options</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;No data&#39;</span><span class="p">]</span>
     <span class="n">initial_species</span> <span class="o">=</span> <span class="s2">&quot;No data&quot;</span>
     <span class="n">initial_audios</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;No hay audios disponibles&quot;</span><span class="p">]</span>
@@ -510,9 +470,8 @@ document.write(`
     <span class="n">value</span><span class="o">=</span><span class="n">initial_species</span> <span class="k">if</span> <span class="n">species_options</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Seleccionar Especie:&#39;</span><span class="p">,</span>
     <span class="n">disabled</span><span class="o">=</span><span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">species_options</span><span class="p">),</span>
-    <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;description_width&#39;</span><span class="p">:</span> <span class="s1">&#39;initial&#39;</span><span class="p">}</span> <span class="c1"># Ajusta el ancho para que quepa la descripción</span>
+    <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;description_width&#39;</span><span class="p">:</span> <span class="s1">&#39;initial&#39;</span><span class="p">}</span>
 <span class="p">)</span>
-
 
 <span class="n">audio_dropdown</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
     <span class="n">options</span><span class="o">=</span><span class="n">initial_audios</span><span class="p">,</span>
@@ -529,52 +488,61 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_audio_options</span><span class="p">(</span><span class="n">change</span><span class="p">):</span>
-    
-    <span class="n">selected_species_label</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="n">new</span>
-    
-    <span class="k">with</span> <span class="n">audio_output</span><span class="p">:</span>
-        <span class="n">audio_output</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span> 
-        
-    <span class="k">if</span> <span class="n">selected_species_label</span> <span class="ow">and</span> <span class="n">selected_species_label</span> <span class="o">!=</span> <span class="s1">&#39;No data&#39;</span><span class="p">:</span>
-        <span class="n">new_audios</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">[</span>
-            <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;combined_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_species_label</span>
-        <span class="p">][</span><span class="n">FILENAME_COLUMN</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-        
-        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">new_audios</span>
-        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">new_audios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">new_audios</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">new_audios</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        
-        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;No hay audios disponibles&quot;</span><span class="p">]</span>
-        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
-
-    <span class="k">if</span> <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-         
-        <span class="n">display_audio_player</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">trait_types</span><span class="o">.</span><span class="n">Result</span><span class="p">({</span><span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span><span class="p">}))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">audio_output</span><span class="p">:</span>
-            <span class="n">audio_output</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MockChange</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new</span> <span class="o">=</span> <span class="n">new_value</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">display_audio_player</span><span class="p">(</span><span class="n">change</span><span class="p">):</span>
-    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Muestra el reproductor de audio.&quot;&quot;&quot;</span>
     <span class="n">selected_filename</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="n">new</span>
     
     <span class="k">with</span> <span class="n">audio_output</span><span class="p">:</span>
         <span class="n">audio_output</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span> 
         
         <span class="k">if</span> <span class="n">selected_filename</span> <span class="ow">and</span> <span class="n">selected_filename</span> <span class="o">!=</span> <span class="s2">&quot;No hay audios disponibles&quot;</span><span class="p">:</span>
+            <span class="c1"># La ruta se construye usando el nombre completo de &#39;filename&#39;</span>
             <span class="n">audio_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">audio_dir</span><span class="p">,</span> <span class="n">selected_filename</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reproduciendo: </span><span class="si">{</span><span class="n">selected_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             
-            <span class="n">display</span><span class="p">(</span><span class="n">Audio</span><span class="p">(</span><span class="n">audio_path</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">Audio</span><span class="p">(</span><span class="n">audio_path</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ERROR DE PERMISO: Verifica que el archivo no esté siendo usado por otro programa.&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ERROR DE ARCHIVO: Archivo no encontrado en la ruta: </span><span class="si">{</span><span class="n">audio_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
              <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Selecciona una especie y un audio para reproducir.&quot;</span><span class="p">)</span>
 
-<span class="n">species_dropdown</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">update_audio_options</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
 
+<span class="k">def</span><span class="w"> </span><span class="nf">update_audio_options</span><span class="p">(</span><span class="n">change</span><span class="p">):</span>
+    <span class="n">selected_species_label</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="n">new</span>
+    
+    <span class="k">with</span> <span class="n">audio_output</span><span class="p">:</span>
+        <span class="n">audio_output</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+        
+    <span class="k">if</span> <span class="n">selected_species_label</span> <span class="ow">and</span> <span class="n">selected_species_label</span> <span class="o">!=</span> <span class="s1">&#39;No data&#39;</span><span class="p">:</span>
+        
+        <span class="n">new_audios</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df_filtered</span><span class="p">[</span>
+            <span class="n">df_filtered</span><span class="p">[</span><span class="s1">&#39;combined_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">selected_species_label</span>
+        <span class="p">][</span><span class="n">FILENAME_COLUMN</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        
+        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">new_audios</span>
+        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">new_audios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">new_audios</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">new_audios</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;No hay audios disponibles&quot;</span><span class="p">]</span>
+        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
+    
+    <span class="k">if</span> <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+         <span class="n">mock_event_object</span> <span class="o">=</span> <span class="n">MockChange</span><span class="p">(</span><span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+         <span class="n">display_audio_player</span><span class="p">(</span><span class="n">mock_event_object</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">audio_output</span><span class="p">:</span>
+            <span class="n">audio_output</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+
+<span class="n">species_dropdown</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">update_audio_options</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
 <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">display_audio_player</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -582,7 +550,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;INTERFAZ PARA REPRODUCCIÓN DE AUDIOS &quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> REPRODUCCIÓN DE AUDIOS&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. Selecciona una especie (código - nombre científico).&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. Selecciona un audio para reproducirlo.&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
@@ -592,13 +560,23 @@ document.write(`
     <span class="n">audio_dropdown</span>
 <span class="p">])</span>
 
+
 <span class="n">display</span><span class="p">(</span><span class="n">interface_layout</span><span class="p">,</span> <span class="n">audio_output</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-    <span class="n">display_audio_player</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">trait_types</span><span class="o">.</span><span class="n">Result</span><span class="p">({</span><span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span><span class="p">}))</span>
+    <span class="n">mock_event_object</span> <span class="o">=</span> <span class="n">MockChange</span><span class="p">(</span><span class="n">audio_dropdown</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">display_audio_player</span><span class="p">(</span><span class="n">mock_event_object</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> REPRODUCCIÓN DE AUDIOS
+1. Selecciona una especie (código - nombre científico).
+2. Selecciona un audio para reproducirlo.
+--------------------------------------------------
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "822c5651e10c4e8e933b711bd6261ac2", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "75cc4452d4894b62a82e240739a11e48", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 </section>
